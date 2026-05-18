@@ -1,5 +1,7 @@
 import { eachDayOfInterval } from 'date-fns';
+import { unstable_noStore as noStore } from 'next/cache';
 import { supabase } from './supabase';
+import { notFound } from 'next/navigation';
 /////////////
 // GET
 
@@ -15,6 +17,7 @@ export async function getCabin(id) {
 
   if (error) {
     console.error(error);
+    notFound();
   }
 
   return data;
@@ -35,6 +38,8 @@ export async function getCabinPrice(id) {
 }
 
 export const getCabins = async function () {
+  noStore();
+
   const { data, error } = await supabase
     .from('cabins')
     .select('id, name, maxCapacity, regularPrice, discount, image')
