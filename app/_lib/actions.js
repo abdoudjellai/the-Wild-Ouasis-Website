@@ -2,6 +2,10 @@
 
 import { signIn,signOut   } from "@/app/_lib/auth";
 
+export async function updateProfile(formData) {
+
+}
+
 export async function signInAction() {
   await signIn("google", { redirectTo: "/account" });
 }
