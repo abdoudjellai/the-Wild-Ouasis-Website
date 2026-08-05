@@ -1,5 +1,7 @@
 import SelectCountry from "@/app/_components/SelectCountry";
 import UpdateProfileForm from "@/app/_components/UpdateProfileForm";
+import { auth } from "@/app/_lib/auth";
+import { getGuest } from "@/app/_lib/data-service";
 
 export const metadata = {
   title: "Guest profile",
@@ -8,7 +10,8 @@ export default async function Page() {
   const session = await auth();
   const guest = await getGuest(session.user.email);
   // CHANGE
-  
+
+
   return (
     <div>
       <h2 className="font-semibold text-2xl text-accent-400 mb-4">

@@ -136,15 +136,39 @@ export async function getSettings() {
   return data;
 }
 
+// export async function getCountries() {
+//   try {
+//     const res = await fetch(
+//       'https://api.restcountries.com/countries/v5?response_fields=names.common&limit=250',
+//       { headers: { 'Authorization': 'Bearer rc_live_d0496b4e73f147d09c0b2a25052f4b94' } }
+
+//     );
+//     const {data} = await res.json();
+//     // console.log("countries NEWWW :: " , data.data);
+//     return data.objects.map((c) => ({
+//       name: c.names.common,
+//       flag: c.flag.emoji,
+//     }));
+//   } catch {
+//     throw new Error('Could not fetch countries');
+//   }
+// }
+// data-service.js
 export async function getCountries() {
   try {
-    const res = await fetch(
-      'https://restcountries.com/v2/all?fields=name,flag'
-    );
-    const countries = await res.json();
-    return countries;
-  } catch {
-    throw new Error('Could not fetch countries');
+    const res = await fetch("https://countries.dev/countries?fields=name%2Cflag&limit=100&offset=0", {
+  method: "GET"
+})
+
+    if (!res.ok) return [];
+
+    const  data = await res.json();
+
+    // Flatten to match what SelectCountry expects: { name, flag }
+    return data
+  } catch (error) {
+    console.error("getCountries error:", error);
+    return []; // always an array, so .find()/.map() never crash
   }
 }
 
@@ -182,45 +206,45 @@ export async function createBooking(newBooking) {
 // UPDATE
 
 // The updatedFields is an object which should ONLY contain the updated data
-export async function updateGuest(id, updatedFields) {
-  const { data, error } = await supabase
-    .from('guests')
-    .update(updatedFields)
-    .eq('id', id)
-    .select()
-    .single();
+// export async function updateGuest(id, updatedFields) {
+//   const { data, error } = await supabase
+//     .from('guests')
+//     .update(updatedFields)
+//     .eq('id', id)
+//     .select()
+//     .single();
 
-  if (error) {
-    console.error(error);
-    throw new Error('Guest could not be updated');
-  }
-  return data;
-}
+//   if (error) {
+//     console.error(error);
+//     throw new Error('Guest could not be updated');
+//   }
+//   return data;
+// }
 
-export async function updateBooking(id, updatedFields) {
-  const { data, error } = await supabase
-    .from('bookings')
-    .update(updatedFields)
-    .eq('id', id)
-    .select()
-    .single();
+  // export async function updateBooking(id, updatedFields) {
+  //   const { data, error } = await supabase
+  //     .from('bookings')
+  //     .update(updatedFields)
+  //     .eq('id', id)
+  //     .select()
+  //     .single();
 
-  if (error) {
-    console.error(error);
-    throw new Error('Booking could not be updated');
-  }
-  return data;
-}
+  //   if (error) {
+  //     console.error(error);
+  //     throw new Error('Booking could not be updated');
+  //   }
+  //   return data;
+  // }
 
 /////////////
 // DELETE
 
-export async function deleteBooking(id) {
-  const { data, error } = await supabase.from('bookings').delete().eq('id', id);
+// export async function deleteBooking(id) {
+//   const { data, error } = await supabase.from('bookings').delete().eq('id', id);
 
-  if (error) {
-    console.error(error);
-    throw new Error('Booking could not be deleted');
-  }
-  return data;
-}
+//   if (error) {
+//     console.error(error);
+//     throw new Error('Booking could not be deleted');
+//   }
+//   return data;
+// }
